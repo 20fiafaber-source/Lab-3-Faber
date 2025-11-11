@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Frontend</title>
+  </head>
+  <body>
+    <h1>Frontend Connected</h1>
+    <div id="output">Loading...</div>
+    <script>
+      fetch("http://localhost:5000/api/data")
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("output").innerText =
+            `${data.message} (source: ${data.source})`;
+        })
+        .catch(err => {
+          document.getElementById("output").innerText = "Error: " + err;
+        });
+    </script>
+  </body>
+</html>
