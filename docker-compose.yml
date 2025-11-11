@@ -1,11 +1,36 @@
-.
-├── docker-compose.yml
-├── frontend/
-│   ├── Dockerfile
-│   ├── package.json
-│   └── index.html
-├── backend/
-│   ├── Dockerfile
-│   └── app.py
-└── .gitignore
+version: "3.9"
 
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app_net
+
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+    networks:
+      - app_net
+
+  redis:
+    image: redis:latest
+    volumes:
+      - redis_data:/data
+    networks:
+      - app_net
+
+volumes:
+  redis_data:
+
+networks:
+  app_net:
